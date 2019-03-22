@@ -6,8 +6,11 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.brendon.myapplication.models.Pokemon;
@@ -21,9 +24,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityPrese
 
     MainActivityPresenter presenter;
 
+    ProgressBar progressBar;
+    LinearLayout lytResult;
     EditText search;
     TextView name, id;
-    ImageView avatar;
+    ImageView avatar, noResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,10 +37,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityPrese
 
         presenter = new MainActivityPresenter(this);
 
+        progressBar = findViewById(R.id.progressBar);
+        lytResult = findViewById(R.id.linLyt_result);
         search = findViewById(R.id.et_search);
         name = findViewById(R.id.tv_Name);
         id = findViewById(R.id.tv_ID);
         avatar = findViewById(R.id.img_Avatar);
+        noResult = findViewById(R.id.img_NoResult);
 
         search.addTextChangedListener(new TextWatcher() {
             @Override
@@ -45,9 +53,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityPrese
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                Log.i(TAG, "Searching for "+ charSequence.toString());
-                presenter.getPokemon(charSequence.toString());
-
+                if(charSequence.length() >0){
+                    Log.i(TAG, "Searching for "+ charSequence.toString());
+                    showProgressBar();
+                    presenter.getPokemon(charSequence.toString());
+                }
             }
 
             @Override
@@ -61,18 +71,27 @@ public class MainActivity extends AppCompatActivity implements MainActivityPrese
 
     @Override
     public void updatePokemon(Pokemon pokemon) {
-        name.setText(pokemon.getName());
-        id.setText(pokemon.getId().toString());
-        Glide.with(context).load(pokemon.getSprites().getFrontDefault()).into(avatar);
+        if(pokemon != null){
+            noResult.setVisibility(ImageView.INVISIBLE);
+            name.setText(pokemon.getName());
+            id.setText(pokemon.getId().toString());
+            Glide.with(context).load(pokemon.getSprites().getFrontDefault()).into(avatar);
+            lytResult.setVisibility(LinearLayout.VISIBLE);
+        }
+        else {
+            lytResult.setVisibility(LinearLayout.INVISIBLE);
+            noResult.setVisibility(ImageView.VISIBLE);
+        }
+
     }
 
     @Override
     public void showProgressBar() {
-
+        progressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideProgressBar() {
-
+        progressBar.setVisibility(View.INVISIBLE);
     }
 }

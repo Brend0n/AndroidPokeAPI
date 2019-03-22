@@ -7,8 +7,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class NetworkClient {
     public static Retrofit retrofit;
 
-    public NetworkClient() {
-    }
 
     public static Retrofit getRetrofit(){
         if(retrofit == null){
@@ -16,7 +14,6 @@ public class NetworkClient {
                     .baseUrl("https://pokeapi.co/api/v2/")
                     .addConverterFactory(GsonConverterFactory.create())
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-
                     .build();
         }
         return retrofit;

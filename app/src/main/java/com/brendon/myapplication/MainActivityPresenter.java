@@ -1,5 +1,6 @@
 package com.brendon.myapplication;
 
+import android.util.Log;
 import android.view.View;
 
 import com.brendon.myapplication.models.Pokemon;
@@ -10,6 +11,8 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class MainActivityPresenter {
     String TAG = "MainActivityPresenter";
@@ -24,7 +27,7 @@ public class MainActivityPresenter {
         getObservable(search).subscribeWith(getObserver());
     }
 
-    public Observable<Pokemon> getObservable(String search){
+    public Observable<Response<Pokemon>> getObservable(String search){
         return NetworkClient.
                 getRetrofit().create(NetworkInterface.class)
                 .getPokemon(search)
@@ -32,15 +35,23 @@ public class MainActivityPresenter {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    public DisposableObserver<Pokemon> getObserver(){
-        return new DisposableObserver<Pokemon>() {
+    public DisposableObserver<Response<Pokemon>> getObserver(){
+        return new DisposableObserver<Response<Pokemon>>() {
             @Override
-            public void onNext(Pokemon pokemon) {
-                view.updatePokemon(pokemon);
+            public void onNext(Response<Pokemon> pokemonResponse) {
+//                Log.i(TAG, "ERROR: "+pokemonResponse.getError());
+                if(pokemonResponse.code() == 404){
+                    view.updatePokemon(null);
+                }else{
+                    view.updatePokemon(pokemonResponse.body());
+                }
+                view.hideProgressBar();
             }
 
             @Override
             public void onError(Throwable e) {
+                Log.e(TAG, e.getMessage());
+                view.hideProgressBar();
 
             }
 
