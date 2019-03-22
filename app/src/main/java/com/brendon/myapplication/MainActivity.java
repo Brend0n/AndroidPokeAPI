@@ -1,5 +1,6 @@
 package com.brendon.myapplication;
 
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -8,9 +9,14 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+import com.brendon.myapplication.models.Pokemon;
+import com.bumptech.glide.Glide;
+
+public class MainActivity extends AppCompatActivity implements MainActivityPresenter.View {
 
     String TAG = "MainActivity";
+
+    Context context = this;
 
     EditText search;
     TextView name, id;
@@ -43,6 +49,23 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+    }
+
+    @Override
+    public void updatePokemon(Pokemon pokemon) {
+        name.setText(pokemon.getName());
+        id.setText(pokemon.getId().toString());
+        Glide.with(context).load(pokemon.getSprites().getFrontDefault()).into(avatar);
+    }
+
+    @Override
+    public void showProgressBar() {
+
+    }
+
+    @Override
+    public void hideProgressBar() {
 
     }
 }
