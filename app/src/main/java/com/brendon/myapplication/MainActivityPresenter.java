@@ -12,6 +12,8 @@ import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
 public class MainActivityPresenter {
+    String TAG = "MainActivityPresenter";
+
     View view;
 
     public MainActivityPresenter(View view) {
