@@ -54,7 +54,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityPrese
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if(charSequence.length() >0){
-                    Log.i(TAG, "Searching for "+ charSequence.toString());
                     showProgressBar();
                     presenter.getPokemon(charSequence.toString());
                 }

@@ -1,7 +1,9 @@
 <resources>
     <string name="app_name">My Application</string>
-    <string name="tv_name">Name</string>
-    <string name="tv_id">ID</string>
+    <string name="tv_name">Pokemon Name</string>
+    <string name="tv_id">Pokemon ID</string>
     <string name="img_Pokemon_CD">pokemon picture</string>
     <string name="et_search_hint">search pokemon</string>
+    <string name="tv_idLabel">ID:</string>
+    <string name="tv_nameLabel">Name:</string>
 </resources>
