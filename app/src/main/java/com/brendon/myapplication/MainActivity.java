@@ -18,6 +18,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityPrese
 
     Context context = this;
 
+    MainActivityPresenter presenter;
+
     EditText search;
     TextView name, id;
     ImageView avatar;
@@ -26,6 +28,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityPrese
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        presenter = new MainActivityPresenter(this);
 
         search = findViewById(R.id.et_search);
         name = findViewById(R.id.tv_Name);
@@ -40,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityPrese
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                presenter.getPokemon(charSequence.toString());
 
             }
 
